@@ -19,6 +19,26 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# ═══════════════ PWA META & SERVICE WORKER INJECTION ═══════════════
+st.markdown("""
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ef4444">
+<meta name="description" content="Detect fake news, viral hoaxes, clickbait headlines, and AI-generated images instantly.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="apple-touch-icon" href="icon-192.png">
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('sw.js').then(function(reg) {
+                console.log('Truth Buster PWA registered: ', reg);
+            }, function(err) {
+                console.log('ServiceWorker failed: ', err);
+            });
+        });
+    }
+</script>
+""", unsafe_allow_html=True)
+
 # ═══════════════ PREMIUM DARK GLASSMORPHISM CSS ═══════════════
 st.markdown("""
 <style>
