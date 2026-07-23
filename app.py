@@ -770,6 +770,79 @@ VISUAL FORENSICS:
         </div>
         """, unsafe_allow_html=True)
 
+        # ═══════════════ PUBLIC IMPACT & WHATSAPP WARNER ═══════════════
+        st.markdown("<div class='glow-line'></div>", unsafe_allow_html=True)
+        st.markdown("## 🛡️ Take Action & Stop The Spread")
+
+        act_c1, act_c2 = st.columns([1.2, 1])
+
+        with act_c1:
+            st.markdown("### 💬 Copy & Send WhatsApp Warning")
+            st.caption("Paste this message back into your WhatsApp group to inform people:")
+            
+            # Format custom warning text based on score
+            if overall_truth < 50:
+                warning_emoji = "🚨 FAKE NEWS ALERT 🚨"
+                verdict_text = f"🛑 RATED {overall_truth}% TRUTH SCORE (HIGH RISK / FAKE)"
+                action_text = "🚫 DO NOT FORWARD THIS MESSAGE TO FAMILY OR GROUPS!"
+            elif overall_truth < 75:
+                warning_emoji = "⚠️ UNVERIFIED CLAIM NOTICE ⚠️"
+                verdict_text = f"🟡 RATED {overall_truth}% TRUTH SCORE (UNVERIFIED / SUSPICIOUS)"
+                action_text = "⚠️ PLEASE WAIT FOR OFFICIAL CONFIRMATION BEFORE SHARING."
+            else:
+                warning_emoji = "✅ VERIFIED NEWS NOTICE ✅"
+                verdict_text = f"🟢 RATED {overall_truth}% TRUTH SCORE (LIKELY REAL)"
+                action_text = "✅ Safe to share, but read full sources."
+
+            claim_snippet = (article_body or article_headline)[:80].replace('\n', ' ')
+            if len((article_body or article_headline)) > 80:
+                claim_snippet += "..."
+
+            whatsapp_msg = f"""{warning_emoji}
+Claim: "{claim_snippet}"
+Result: {verdict_text}
+{action_text}
+
+Verified using Truth Buster AI: https://truth-buster-ai.streamlit.app"""
+
+            st.code(whatsapp_msg, language="markdown")
+
+        with act_c2:
+            st.markdown("### 💡 What Should You Do?")
+            if overall_truth < 50:
+                st.markdown("""
+                <div class="glass-card" style="border-left: 4px solid #ef4444;">
+                    <b style="color: #ef4444; font-size: 1rem;">1. DO NOT FORWARD</b><br/>
+                    <span style="color: #cbd5e1; font-size: 0.88rem;">Stop the chain reaction. Forwarding fake news creates panic.</span><br/><br/>
+                    <b style="color: #f59e0b; font-size: 1rem;">2. WARN THE SENDER</b><br/>
+                    <span style="color: #cbd5e1; font-size: 0.88rem;">Copy the warning box on the left and reply to whoever sent you this claim.</span><br/><br/>
+                    <b style="color: #6366f1; font-size: 1rem;">3. CHECK OFFICIAL FACT-CHECKERS</b><br/>
+                    <span style="color: #cbd5e1; font-size: 0.88rem;">Look up the claim on official fact-checking portals below.</span>
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown("""
+                <div class="glass-card" style="border-left: 4px solid #22c55e;">
+                    <b style="color: #22c55e; font-size: 1rem;">1. SAFE TO SHARE WITH CONTEXT</b><br/>
+                    <span style="color: #cbd5e1; font-size: 0.88rem;">The content shows strong indicators of authentic journalism.</span><br/><br/>
+                    <b style="color: #6366f1; font-size: 1rem;">2. ALWAYS DOUBLE-CHECK SOURCES</b><br/>
+                    <span style="color: #cbd5e1; font-size: 0.88rem;">Ensure news comes from recognized media outlets.</span>
+                </div>
+                """, unsafe_allow_html=True)
+
+        # ─── External Fact-Check Search ───
+        st.markdown("### 🌐 Search Trusted Fact-Check Archives")
+        fc1, fc2, fc3 = st.columns(3)
+        query_text = (article_headline or article_body[:50]).strip()
+        encoded_query = query_text.replace(" ", "+") if query_text else "fake+news"
+
+        with fc1:
+            st.markdown(f'<a href="https://toolbox.google.com/factcheck/explorer/search/{encoded_query}" target="_blank" style="text-decoration:none;"><div class="metric-card-v2" style="border-color: rgba(99, 102, 241, 0.4);"><div class="mc-icon">🔍</div><div class="mc-label">Google Fact Check Explorer</div></div></a>', unsafe_allow_html=True)
+        with fc2:
+            st.markdown(f'<a href="https://pib.gov.in/FactCheck.aspx" target="_blank" style="text-decoration:none;"><div class="metric-card-v2" style="border-color: rgba(34, 197, 94, 0.4);"><div class="mc-icon">🇮🇳</div><div class="mc-label">PIB Fact Check (Govt of India)</div></div></a>', unsafe_allow_html=True)
+        with fc3:
+            st.markdown(f'<a href="https://www.boomlive.in/search?q={encoded_query}" target="_blank" style="text-decoration:none;"><div class="metric-card-v2" style="border-color: rgba(236, 72, 153, 0.4);"><div class="mc-icon">🗞️</div><div class="mc-label">BoomLive Fact Check</div></div></a>', unsafe_allow_html=True)
+
 # ─── Footer ───
 st.markdown("<div class='glow-line'></div>", unsafe_allow_html=True)
 st.markdown("""
