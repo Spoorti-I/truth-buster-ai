@@ -622,9 +622,13 @@ if bust_clicked:
         # ─── Tab 3: Visual Forensics (if image) ───
         if image_result:
             with tabs[2]:
-                st.markdown("### 🔬 Visual Evidence Analysis")
+                st.markdown("### 🔬 Visual Evidence & AI Detection Analysis")
+                
                 img_c1, img_c2 = st.columns([1, 1.5])
                 with img_c1:
+                    # Main authenticity card
+                    ai_risk = image_result.get('ai_risk_score', 0)
+                    ai_risk_color = '#dc3545' if ai_risk > 60 else '#fd7e14' if ai_risk > 35 else '#22c55e'
                     st.markdown(f"""
                     <div class="glass-card" style="border-left: 4px solid {image_result['status_color']};">
                         <div style="color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; font-weight: 600;">Media Authenticity</div>
@@ -633,9 +637,63 @@ if bust_clicked:
                         <div style="color: #64748b; font-size: 0.85rem; margin-top: 8px;">Resolution: {image_result['resolution']}<br/>Format: {image_result['format']}<br/>ELA Score: {image_result['ela_score']}/100</div>
                     </div>
                     """, unsafe_allow_html=True)
+                    
+                    # AI Risk Score card
+                    st.markdown(f"""
+                    <div class="metric-card-v2" style="margin-top: 10px; border-left: 4px solid {ai_risk_color};">
+                        <div class="mc-icon">🤖</div>
+                        <div class="mc-label">AI Generation Risk</div>
+                        <div class="mc-val" style="color: {ai_risk_color};">{ai_risk}%</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
                 with img_c2:
+                    # New metric cards row
+                    vm1, vm2, vm3 = st.columns(3)
+                    smoothness = image_result.get('smoothness', 0)
+                    noise_uni = image_result.get('noise_uniformity', 0)
+                    entropy = image_result.get('entropy', 0)
+                    
+                    with vm1:
+                        sm_color = '#dc3545' if smoothness > 60 else '#22c55e'
+                        st.markdown(f"""
+                        <div class="metric-card-v2">
+                            <div class="mc-icon">✨</div>
+                            <div class="mc-label">Smoothness</div>
+                            <div class="mc-val" style="color: {sm_color};">{smoothness}%</div>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    with vm2:
+                        nu_color = '#dc3545' if noise_uni > 65 else '#22c55e'
+                        st.markdown(f"""
+                        <div class="metric-card-v2">
+                            <div class="mc-icon">📡</div>
+                            <div class="mc-label">Noise Uniform.</div>
+                            <div class="mc-val" style="color: {nu_color};">{noise_uni}%</div>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    with vm3:
+                        en_color = '#22c55e' if entropy > 55 else '#dc3545'
+                        st.markdown(f"""
+                        <div class="metric-card-v2">
+                            <div class="mc-icon">🧮</div>
+                            <div class="mc-label">Entropy</div>
+                            <div class="mc-val" style="color: {en_color};">{entropy}%</div>
+                        </div>
+                        """, unsafe_allow_html=True)
+
+                    st.write("")
+                    # Detection flags with proper classification
                     for f in image_result["flags"]:
-                        st.markdown(f'<div class="finding-item finding-info">📸&nbsp;&nbsp;{f}</div>', unsafe_allow_html=True)
+                        if "🤖" in f:
+                            cls = "finding-danger"
+                        elif "⚠️" in f:
+                            cls = "finding-warning"
+                        elif "✅" in f:
+                            cls = "finding-success"
+                        else:
+                            cls = "finding-info"
+                        st.markdown(f'<div class="finding-item {cls}">{f}</div>', unsafe_allow_html=True)
 
         # ─── Tab: Export ───
         with tabs[-1]:
