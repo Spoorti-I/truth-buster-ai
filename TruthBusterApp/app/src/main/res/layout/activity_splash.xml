@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A0C12"
+    android:gravity="center">
+
+    <!-- Big Emoji Icon -->
+    <TextView
+        android:id="@+id/splash_emoji"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="🕵️"
+        android:textSize="72sp"
+        android:alpha="0" />
+
+    <!-- App Title -->
+    <TextView
+        android:id="@+id/splash_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/splash_emoji"
+        android:layout_centerHorizontal="true"
+        android:text="Truth Buster AI"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        android:alpha="0" />
+
+    <!-- Tagline -->
+    <TextView
+        android:id="@+id/splash_tagline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/splash_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Spot the Fake. Uncover the Truth. 🚀"
+        android:textColor="#EF4444"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        android:alpha="0" />
+
+    <!-- Loading Indicator -->
+    <ProgressBar
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_below="@id/splash_tagline"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:indeterminateTint="#6366F1" />
+
+</RelativeLayout>
